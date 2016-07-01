@@ -1,0 +1,27 @@
+#!/bin/sh
+#
+# Author: Izharul Haq <atoz [at] openmailbox [dot] org>
+# Usage: ./scripts/bump-version.sh <version-id>
+#
+
+CURRENT_VERSION="$(git describe --tags --abbrev=0 | grep -o '[.0-9]*')"
+
+usage() {
+        echo "Usage: ./scripts/bump-version.sh <version-id>"
+        echo "Current version: ${CURRENT_VERSION}"
+}
+
+if [ $# -ne 1 ]; then
+        usage
+        exit 1
+fi
+
+if ! sed 's/^VERSION = .*$/VERSION='$1'/g' VERSION.txt > .VERSION.txt.new; then
+        echo "Could not replace VERSION variable." >&2
+        exit 2
+fi
+
+mv .VERSION.txt.new VERSION.txt
+git add VERSION.txt
+git commit -m "Update version number to v$1" VERSION.txt
+git tag v$1 -m "Release version number to v$1"

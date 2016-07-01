@@ -1,0 +1,33 @@
+#!/bin/bash
+#
+# Author: Izharul Haq <atoz [at] openmailbox [dot] org>
+# Usage: ./scripts/giti.sh <version>
+#
+
+set -e
+
+VERSION="$1"
+PROJECT="$2"
+USERNAME=""
+EMAIL=""
+
+if ! [[ "${VERSION}" != "" && "${VERSION}" =~ ^[.0-9]*$ ]]
+then
+    echo "Usage: ./scripts/giti.sh <version (a.b.c)> <project name>" >&2
+    echo "ex: ./scripts/giti.sh 1.x 'My Project Name'"
+    exit 1
+fi
+git init
+git config --global user.name "${USERNAME}"
+git config --global user.email "${EMAIL}"
+touch README.md CONTRIBUTING.md CHANGELOG.md LICENSE VERSION.txt
+echo "# $2" > README.md
+echo "# Contributing" > CONTRIBUTING.md
+echo "Changelog" > CHANGELOG.md
+echo "=========" >> CHANGELOG.md
+echo "# License" > LICENSE
+echo "# Release" > VERSION.txt
+echo "VERSION = $1" >> VERSION.txt
+git add .
+git commit -a -m "Initial commit"
+

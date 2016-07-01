@@ -1,0 +1,10 @@
+#!/bin/bash
+#
+# Author: Izharul Haq <atoz [at] openmailbox [dot] org>
+# Usage: ./scripts/clean.sh
+#
+
+echo "Removing files in $(pwd)"
+rm -rf .git
+rm *.md *.txt LICENSE
+echo "All done!"
